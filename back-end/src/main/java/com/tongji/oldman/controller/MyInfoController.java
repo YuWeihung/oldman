@@ -12,17 +12,16 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/login")
-public class LoginController {
-
+@RequestMapping("/myinfo")
+public class MyInfoController {
     private final UserService userService;
 
-    public LoginController(UserService userService) {
+    public MyInfoController(UserService userService) {
         this.userService = userService;
     }
 
-    @PostMapping("/login")
-    public String login(Integer uid, String password) {
+    @PostMapping("/changepassword")
+    public String changePassword(Integer uid, String password, String newpassword) {
         int success = 0;
         int wrongpassword = 0;
         UserExample userExample = new UserExample();
@@ -35,6 +34,10 @@ public class LoginController {
             user = users.get(0);
             if (users.get(0).getPassword().equals(password)) {
                 success = 1;
+                User user1 = new User();
+                user1.setUid(uid);
+                user1.setPassword(newpassword);
+                int updateUser = userService.updateUser(user1);
             }
             else {
                 wrongpassword = 1;
@@ -45,5 +48,4 @@ public class LoginController {
         }
         return JSON.toJSONString(new UserResponse(success, user, wrongpassword));
     }
-
 }

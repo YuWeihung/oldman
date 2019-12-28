@@ -3,8 +3,6 @@ package com.tongji.oldman.mapper;
 import com.tongji.oldman.entity.Task;
 import com.tongji.oldman.entity.TaskExample;
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
