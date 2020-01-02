@@ -10,14 +10,13 @@ import com.tongji.oldman.response.OldListResponse;
 import com.tongji.oldman.response.UserResponse;
 import com.tongji.oldman.service.HealthService;
 import com.tongji.oldman.service.OldService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/olds")
 public class OldsController {
@@ -30,19 +29,147 @@ public class OldsController {
         this.healthService = healthService;
     }
 
+    private static class Req {
+        private String type;
+        private Integer oid;
+        private String name;
+        private String address;
+        private String image;
+        private Date birthday;
+        private Integer gender;
+        private String identity;
+        private String nation;
+        private String education;
+        private String phone;
+        private String single;
+        private String finance;
+        private String insurance;
+        private String dependant;
+        private String dependantphone;
+        private String dependantindentity;
+        private Integer responsibility;
+        private Double weight;
+        private String bloodpressure;
+        private Integer heartbeat;
+        private String leftsight;
+        private String rightsight;
+        private String recognize;
+        private String mental;
+
+        public void setOid(Integer oid) {
+            this.oid = oid;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setGender(Integer gender) {
+            this.gender = gender;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public void setBirthday(Date birthday) {
+            this.birthday = birthday;
+        }
+
+        public void setBloodpressure(String bloodpressure) {
+            this.bloodpressure = bloodpressure;
+        }
+
+        public void setDependant(String dependant) {
+            this.dependant = dependant;
+        }
+
+        public void setDependantindentity(String dependantindentity) {
+            this.dependantindentity = dependantindentity;
+        }
+
+        public void setDependantphone(String dependantphone) {
+            this.dependantphone = dependantphone;
+        }
+
+        public void setEducation(String education) {
+            this.education = education;
+        }
+
+        public void setFinance(String finance) {
+            this.finance = finance;
+        }
+
+        public void setHeartbeat(Integer heartbeat) {
+            this.heartbeat = heartbeat;
+        }
+
+        public void setIdentity(String identity) {
+            this.identity = identity;
+        }
+
+        public void setInsurance(String insurance) {
+            this.insurance = insurance;
+        }
+
+        public void setLeftsight(String leftsight) {
+            this.leftsight = leftsight;
+        }
+
+        public void setMental(String mental) {
+            this.mental = mental;
+        }
+
+        public void setNation(String nation) {
+            this.nation = nation;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public void setRecognize(String recognize) {
+            this.recognize = recognize;
+        }
+
+        public void setResponsibility(Integer responsibility) {
+            this.responsibility = responsibility;
+        }
+
+        public void setRightsight(String rightsight) {
+            this.rightsight = rightsight;
+        }
+
+        public void setSingle(String single) {
+            this.single = single;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public void setWeight(Double weight) {
+            this.weight = weight;
+        }
+    }
+
     @PostMapping("/getolds")
-    public String getOlds(String type, Integer oid, String name, String address) {
+    public String getOlds(@RequestBody Req req) {
         List<Old> olds;
         OldExample oldExample = new OldExample();
         OldExample.Criteria criteria = oldExample.createCriteria();
-        if (type.equals("oid")) {
-            criteria.andOidEqualTo(oid);
+        if (req.type.equals("oid")) {
+            criteria.andOidEqualTo(req.oid);
         }
-        else if (type.equals("name")) {
-            criteria.andNameLike("%"+name+"%");
+        else if (req.type.equals("name")) {
+            criteria.andNameLike("%"+req.name+"%");
         }
-        else if (type.equals("address")) {
-            criteria.andAddressLike("%"+address+"%");
+        else if (req.type.equals("address")) {
+            criteria.andAddressLike("%"+req.address+"%");
         }
         olds = oldService.getOlds(oldExample);
         OldListResponse oldListResponse = new OldListResponse(olds);
@@ -50,27 +177,24 @@ public class OldsController {
     }
 
     @PostMapping("/createold")
-    public String createOld(String name, String image, Date birthday, Integer gender, String identity,
-                            String address, String nation, String education, String phone,
-                            String single, String finance, String insurance, String dependant,
-                            String dependantphone, String dependantindentity, Integer responsibility) {
+    public String createOld(@RequestBody Req req) {
         Old old = new Old();
-        old.setName(name);
-        old.setImage(image);
-        old.setBirthday(birthday);
-        old.setGender(gender);
-        old.setIdentity(identity);
-        old.setAddress(address);
-        old.setNation(nation);
-        old.setEducation(education);
-        old.setPhone(phone);
-        old.setSingle(single);
-        old.setFinance(finance);
-        old.setInsurance(insurance);
-        old.setDependant(dependant);
-        old.setDependantphone(dependantphone);
-        old.setDependantidentity(dependantindentity);
-        old.setResponsibility(responsibility);
+        old.setName(req.name);
+        old.setImage(req.image);
+        old.setBirthday(req.birthday);
+        old.setGender(req.gender);
+        old.setIdentity(req.identity);
+        old.setAddress(req.address);
+        old.setNation(req.nation);
+        old.setEducation(req.education);
+        old.setPhone(req.phone);
+        old.setSingle(req.single);
+        old.setFinance(req.finance);
+        old.setInsurance(req.insurance);
+        old.setDependant(req.dependant);
+        old.setDependantphone(req.dependantphone);
+        old.setDependantidentity(req.dependantindentity);
+        old.setResponsibility(req.responsibility);
         int success = 0;
         int newOld = oldService.newOld(old);
         success = 1;
@@ -79,10 +203,10 @@ public class OldsController {
     }
 
     @PostMapping("/deleteold")
-    public String deleteOld(Integer oid) {
+    public String deleteOld(@RequestBody Req req) {
         OldExample oldExample = new OldExample();
         OldExample.Criteria criteria = oldExample.createCriteria();
-        criteria.andOidEqualTo(oid);
+        criteria.andOidEqualTo(req.oid);
         int delete = oldService.deleteOld(oldExample);
         int success = 0;
         if (delete == 1) {
@@ -93,28 +217,25 @@ public class OldsController {
     }
 
     @PostMapping("changeoldinfo")
-    public String changeOldInfo(Integer oid, String name, String image, Date birthday, Integer gender, String identity,
-                                String address, String nation, String education, String phone,
-                                String single, String finance, String insurance, String dependant,
-                                String dependantphone, String dependantindentity, Integer responsibility) {
+    public String changeOldInfo(@RequestBody Req req) {
         Old old = new Old();
-        old.setResponsibility(responsibility);
-        old.setDependantidentity(dependantindentity);
-        old.setDependant(dependant);
-        old.setDependantphone(dependantphone);
-        old.setInsurance(insurance);
-        old.setFinance(finance);
-        old.setSingle(single);
-        old.setPhone(phone);
-        old.setEducation(education);
-        old.setNation(nation);
-        old.setAddress(address);
-        old.setName(name);
-        old.setOid(oid);
-        old.setImage(image);
-        old.setBirthday(birthday);
-        old.setGender(gender);
-        old.setIdentity(identity);
+//        old.setResponsibility(req.responsibility);
+        old.setDependantidentity(req.dependantindentity);
+        old.setDependant(req.dependant);
+        old.setDependantphone(req.dependantphone);
+        old.setInsurance(req.insurance);
+        old.setFinance(req.finance);
+        old.setSingle(req.single);
+        old.setPhone(req.phone);
+        old.setEducation(req.education);
+        old.setNation(req.nation);
+        old.setAddress(req.address);
+        old.setName(req.name);
+        old.setOid(req.oid);
+        old.setImage(req.image);
+        old.setBirthday(req.birthday);
+        old.setGender(req.gender);
+        old.setIdentity(req.identity);
         int success = 0;
         int update = oldService.updateOld(old);
         if (update == 1)
@@ -124,17 +245,16 @@ public class OldsController {
     }
 
     @PostMapping("/puthealthinfo")
-    public String putHealthInfo(Integer oid, Double weight, String bloodpressure, Integer heartbeat,
-                                String leftsight, String rightsight, String recognize, String mental) {
+    public String putHealthInfo(@RequestBody Req req) {
         Health health = new Health();
-        health.setOid(oid);
-        health.setWeight(weight);
-        health.setBloodpressure(bloodpressure);
-        health.setHeartbeat(heartbeat);
-        health.setLeftsight(leftsight);
-        health.setRightsight(rightsight);
-        health.setRecognize(recognize);
-        health.setMental(mental);
+        health.setOid(req.oid);
+        health.setWeight(req.weight);
+        health.setBloodpressure(req.bloodpressure);
+        health.setHeartbeat(req.heartbeat);
+        health.setLeftsight(req.leftsight);
+        health.setRightsight(req.rightsight);
+        health.setRecognize(req.recognize);
+        health.setMental(req.mental);
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
         health.setDate(date);
@@ -147,20 +267,20 @@ public class OldsController {
     }
 
     @PostMapping("gethealthinfo")
-    public String getHealthInfo(Integer oid) {
+    public String getHealthInfo(@RequestBody Req req) {
         HealthExample healthExample = new HealthExample();
         HealthExample.Criteria criteria = healthExample.createCriteria();
-        criteria.andOidEqualTo(oid);
+        criteria.andOidEqualTo(req.oid);
         List<Health> health = healthService.getHealth(healthExample);
         HealthListResponse healthListResponse = new HealthListResponse(health);
         return JSON.toJSONString(healthListResponse);
     }
 
     @PostMapping("/putresponsibility")
-    public String putResponsibility(Integer oid, Integer responsibility) {
+    public String putResponsibility(@RequestBody Req req) {
         Old old = new Old();
-        old.setOid(oid);
-        old.setResponsibility(responsibility);
+        old.setOid(req.oid);
+        old.setResponsibility(req.responsibility);
         int success = 0;
         int update = oldService.updateOld(old);
         if (update == 1)

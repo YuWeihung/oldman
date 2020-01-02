@@ -10,13 +10,12 @@ import com.tongji.oldman.response.TaskResponse;
 import com.tongji.oldman.response.UserResponse;
 import com.tongji.oldman.service.OldService;
 import com.tongji.oldman.service.TaskService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/mytasks")
 public class MyTasksController {
@@ -28,11 +27,59 @@ public class MyTasksController {
         this.oldService = oldService;
     }
 
+    private static class Req {
+        private Integer uid;
+        private Integer tid;
+        private Integer oid;
+        private String title;
+        private  String image;
+        private String description;
+        private Integer frequency;
+        private Integer allocated;
+        private Integer finished;
+
+        public void setUid(Integer uid) {
+            this.uid = uid;
+        }
+
+        public void setTid(Integer tid) {
+            this.tid = tid;
+        }
+
+        public void setImage(String image) {
+            this.image = image;
+        }
+
+        public void setFrequency(Integer frequency) {
+            this.frequency = frequency;
+        }
+
+        public void setFinished(Integer finished) {
+            this.finished = finished;
+        }
+
+        public void setAllocated(Integer allocated) {
+            this.allocated = allocated;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public void setOid(Integer oid) {
+            this.oid = oid;
+        }
+    }
+
     @PostMapping("/gettasks")
-    public String getTasks(Integer uid) {
+    public String getTasks(@RequestBody Req req) {
         TaskExample taskExample = new TaskExample();
         TaskExample.Criteria criteria = taskExample.createCriteria();
-        criteria.andUidEqualTo(uid);
+        criteria.andUidEqualTo(req.uid);
         List<Task> taskList = taskService.getTasks(taskExample);
         int size = taskList.size();
         List<TaskResponse> list = new ArrayList<>();
@@ -50,14 +97,14 @@ public class MyTasksController {
     }
 
     @PostMapping("/ticktask")
-    public String tickTask(Integer tid) {
+    public String tickTask(@RequestBody Req req) {
         TaskExample taskExample = new TaskExample();
         TaskExample.Criteria criteria = taskExample.createCriteria();
-        criteria.andTidEqualTo(tid);
+        criteria.andTidEqualTo(req.tid);
         int success = 0;
         List<Task> tasks = taskService.getTasks(taskExample);
         Task task = new Task();
-        task.setTid(tid);
+        task.setTid(req.tid);
         task.setFinished(1 - tasks.get(0).getFinished());
         success = 1;
         UserResponse userResponse = new UserResponse(success);
@@ -65,9 +112,9 @@ public class MyTasksController {
     }
 
     @PostMapping("/transfertask")
-    public String transferTask(Integer tid) {
+    public String transferTask(@RequestBody Req req) {
         Task task = new Task();
-        task.setTid(tid);
+        task.setTid(req.tid);
         task.setAllocated(0);
         int transfer = taskService.updateTask(task);
         UserResponse userResponse = new UserResponse(1);
@@ -75,30 +122,29 @@ public class MyTasksController {
     }
 
     @PostMapping("/createtask")
-    public String createTask(Integer uid, Integer oid, String title, String image,
-                             String description, Integer frequency, Integer allocated, Integer finished) {
+    public String createTask(@RequestBody Req req) {
         OldExample oldExample = new OldExample();
         OldExample.Criteria criteria = oldExample.createCriteria();
-        criteria.andOidEqualTo(oid);
+        criteria.andOidEqualTo(req.oid);
         List<Old> oldList = oldService.getOlds(oldExample);
         int notexist = 1;
         int noauth = 1;
         int success = 0;
         int size = oldList.size();
-        if (size == 1 || oid == -1) {
+        if (size == 1 || req.oid == -1) {
             notexist = 0;
-            if (oid == -1 || oldList.get(0).getResponsibility() == uid) {
+            if (req.oid == -1 || oldList.get(0).getResponsibility() == req.uid) {
                 noauth = 0;
                 Task task = new Task();
-                task.setUid(uid);
-                task.setTitle(title);
-                task.setImage(image);
-                task.setDescription(description);
-                task.setFrequency(frequency);
-                task.setAllocated(allocated);
-                task.setFinished(finished);
-                if (oid != -1)
-                    task.setOid(oid);
+                task.setUid(req.uid);
+                task.setTitle(req.title);
+                task.setImage(req.image);
+                task.setDescription(req.description);
+                task.setFrequency(req.frequency);
+                task.setAllocated(req.allocated);
+                task.setFinished(req.finished);
+                if (req.oid != -1)
+                    task.setOid(req.oid);
                 taskService.newTask(task);
                 success = 1;
             }

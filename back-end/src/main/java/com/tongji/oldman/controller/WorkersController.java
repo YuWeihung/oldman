@@ -6,12 +6,11 @@ import com.tongji.oldman.entity.UserExample;
 import com.tongji.oldman.response.UserResponse;
 import com.tongji.oldman.response.WorkerListResponse;
 import com.tongji.oldman.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/workers")
 public class WorkersController {
@@ -19,6 +18,34 @@ public class WorkersController {
 
     public WorkersController(UserService userService) {
         this.userService = userService;
+    }
+
+    private static class Req {
+        private String name;
+        private String avatar;
+        private String password;
+        private Integer uid;
+        private String newpassword;
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public void setUid(Integer uid) {
+            this.uid = uid;
+        }
+
+        public void setNewpassword(String newpassword) {
+            this.newpassword = newpassword;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
     }
 
     @PostMapping("/getworkers")
@@ -32,12 +59,12 @@ public class WorkersController {
     }
 
     @PostMapping("/createworker")
-    public String createWorker(String name, String avatar, String password) {
+    public String createWorker(@RequestBody Req req) {
         User user = new User();
-        user.setName(name);
-        user.setAvatar(avatar);
+        user.setName(req.name);
+        user.setAvatar(req.avatar);
         user.setAdmin(0);
-        user.setPassword(password);
+        user.setPassword(req.password);
         int insert = userService.newUser(user);
         int success = 0;
         if (insert == 1)
@@ -47,10 +74,10 @@ public class WorkersController {
     }
 
     @PostMapping("/achangepassword")
-    public String aChangePassword(Integer uid, String newpassword) {
+    public String aChangePassword(@RequestBody Req req) {
         User user = new User();
-        user.setUid(uid);
-        user.setPassword(newpassword);
+        user.setUid(req.uid);
+        user.setPassword(req.newpassword);
         int update = userService.updateUser(user);
         int success = 0;
         if (update == 1)
@@ -60,10 +87,10 @@ public class WorkersController {
     }
 
     @PostMapping("/deleteworker")
-    public String deleteWorker(Integer uid) {
+    public String deleteWorker(@RequestBody Req req) {
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
-        criteria.andUidEqualTo(uid);
+        criteria.andUidEqualTo(req.uid);
         int delete = userService.deleteUser(userExample);
         int success = 0;
         if (delete == 1)
