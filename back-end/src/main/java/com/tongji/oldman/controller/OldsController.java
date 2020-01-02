@@ -216,7 +216,7 @@ public class OldsController {
         return JSON.toJSONString(userResponse);
     }
 
-    @PostMapping("changeoldinfo")
+    @PostMapping("/changeoldinfo")
     public String changeOldInfo(@RequestBody Req req) {
         Old old = new Old();
 //        old.setResponsibility(req.responsibility);
@@ -266,7 +266,7 @@ public class OldsController {
         return JSON.toJSONString(userResponse);
     }
 
-    @PostMapping("gethealthinfo")
+    @PostMapping("/gethealthinfo")
     public String getHealthInfo(@RequestBody Req req) {
         HealthExample healthExample = new HealthExample();
         HealthExample.Criteria criteria = healthExample.createCriteria();
