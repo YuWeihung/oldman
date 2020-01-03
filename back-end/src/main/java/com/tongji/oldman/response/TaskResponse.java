@@ -6,6 +6,8 @@ import com.tongji.oldman.entity.User;
 
 public class TaskResponse {
     private Integer tid;
+    private Integer oid;
+    private Integer uid;
     private String title;
     private String image;
     private String oname;
@@ -17,6 +19,8 @@ public class TaskResponse {
 
     public TaskResponse(Task task, Old old, User user) {
         this.tid = task.getTid();
+        this.uid = task.getUid();
+        this.oid = task.getOid();
         this.title = task.getTitle();
         this.image = task.getImage();
         this.oname = old.getName();
@@ -25,6 +29,18 @@ public class TaskResponse {
         this.frequency = task.getFrequency();
         this.allocated = task.getAllocated();
         this.finished = task.getFinished();
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname;
+    }
+
+    public void setOid(Integer oid) {
+        this.oid = oid;
+    }
+
+    public void setUid(Integer uid) {
+        this.uid = uid;
     }
 
     public void setTitle(String title) {
@@ -89,5 +105,17 @@ public class TaskResponse {
 
     public String getOname() {
         return oname;
+    }
+
+    public String getUname() {
+        return uname;
+    }
+
+    public Integer getUid() {
+        return uid;
+    }
+
+    public Integer getOid() {
+        return oid;
     }
 }
