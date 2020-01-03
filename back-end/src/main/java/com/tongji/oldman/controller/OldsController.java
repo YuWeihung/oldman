@@ -47,7 +47,7 @@ public class OldsController {
         private String insurance;
         private String dependant;
         private String dependantphone;
-        private String dependantindentity;
+        private String dependantidentity;
         private Integer responsibility;
         private Double weight;
         private String bloodpressure;
@@ -89,8 +89,8 @@ public class OldsController {
             this.dependant = dependant;
         }
 
-        public void setDependantindentity(String dependantindentity) {
-            this.dependantindentity = dependantindentity;
+        public void setDependantidentity(String dependantidentity) {
+            this.dependantidentity = dependantidentity;
         }
 
         public void setDependantphone(String dependantphone) {
@@ -196,7 +196,7 @@ public class OldsController {
         old.setInsurance(req.insurance);
         old.setDependant(req.dependant);
         old.setDependantphone(req.dependantphone);
-        old.setDependantidentity(req.dependantindentity);
+        old.setDependantidentity(req.dependantidentity);
         old.setResponsibility(req.responsibility);
         int success = 0;
         int newOld = oldService.newOld(old);
@@ -224,7 +224,7 @@ public class OldsController {
     public String changeOldInfo(@RequestBody Req req) throws ParseException {
         Old old = new Old();
 //        old.setResponsibility(req.responsibility);
-        old.setDependantidentity(req.dependantindentity);
+        old.setDependantidentity(req.dependantidentity);
         old.setDependant(req.dependant);
         old.setDependantphone(req.dependantphone);
         old.setInsurance(req.insurance);

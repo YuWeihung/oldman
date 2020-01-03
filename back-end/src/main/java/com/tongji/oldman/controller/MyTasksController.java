@@ -81,12 +81,19 @@ public class MyTasksController {
         int size = taskList.size();
         List<TaskResponse> list = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            Integer oid = taskList.get(i).getOid();
-            OldExample oldExample = new OldExample();
-            OldExample.Criteria criteria1 = oldExample.createCriteria();
-            criteria1.andOidEqualTo(oid);
-            List<Old> olds = oldService.getOlds(oldExample);
-            TaskResponse taskResponse = new TaskResponse(taskList.get(i), olds.get(0), new User());
+            Old old;
+            if (taskList.get(i).getOid() != null) {
+                Integer oid = taskList.get(i).getOid();
+                OldExample oldExample = new OldExample();
+                OldExample.Criteria criteria1 = oldExample.createCriteria();
+                criteria1.andOidEqualTo(oid);
+                List<Old> olds = oldService.getOlds(oldExample);
+                old = olds.get(0);
+            }
+            else {
+                old = new Old();
+            }
+            TaskResponse taskResponse = new TaskResponse(taskList.get(i), old, new User());
             list.add(taskResponse);
         }
         TaskListResponse taskListResponse = new TaskListResponse(list);
