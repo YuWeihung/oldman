@@ -103,7 +103,9 @@ public class MyTasksController {
         Task task = new Task();
         task.setTid(req.tid);
         task.setFinished(1 - tasks.get(0).getFinished());
-        success = 1;
+        int update = taskService.updateTask(task);
+        if (update == 1)
+            success = 1;
         UserResponse userResponse = new UserResponse(success);
         return JSON.toJSONString(userResponse);
     }
@@ -130,7 +132,7 @@ public class MyTasksController {
         int size = oldList.size();
         if (size == 1 || req.oid == -1) {
             notexist = 0;
-            if (req.oid == -1 || oldList.get(0).getResponsibility() == req.uid) {
+            if (req.oid == -1 || oldList.get(0).getResponsibility().equals(req.uid)) {
                 noauth = 0;
                 Task task = new Task();
                 task.setUid(req.uid);
