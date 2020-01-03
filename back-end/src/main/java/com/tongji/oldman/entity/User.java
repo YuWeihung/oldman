@@ -1,7 +1,5 @@
 package com.tongji.oldman.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
 import java.io.Serializable;
 
 /**
@@ -37,7 +35,6 @@ public class User implements Serializable {
      *
      * @mbg.generated
      */
-    @JSONField(serialize = false)
     private String password;
 
     /**

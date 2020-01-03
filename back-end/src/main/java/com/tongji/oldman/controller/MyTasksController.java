@@ -1,10 +1,7 @@
 package com.tongji.oldman.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.tongji.oldman.entity.Old;
-import com.tongji.oldman.entity.OldExample;
-import com.tongji.oldman.entity.Task;
-import com.tongji.oldman.entity.TaskExample;
+import com.tongji.oldman.entity.*;
 import com.tongji.oldman.response.TaskListResponse;
 import com.tongji.oldman.response.TaskResponse;
 import com.tongji.oldman.response.UserResponse;
@@ -89,7 +86,7 @@ public class MyTasksController {
             OldExample.Criteria criteria1 = oldExample.createCriteria();
             criteria1.andOidEqualTo(oid);
             List<Old> olds = oldService.getOlds(oldExample);
-            TaskResponse taskResponse = new TaskResponse(taskList.get(i), olds.get(0));
+            TaskResponse taskResponse = new TaskResponse(taskList.get(i), olds.get(0), new User());
             list.add(taskResponse);
         }
         TaskListResponse taskListResponse = new TaskListResponse(list);

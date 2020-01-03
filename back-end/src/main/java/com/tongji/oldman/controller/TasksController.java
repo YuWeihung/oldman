@@ -1,16 +1,16 @@
 package com.tongji.oldman.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.tongji.oldman.entity.Old;
-import com.tongji.oldman.entity.OldExample;
-import com.tongji.oldman.entity.Task;
-import com.tongji.oldman.entity.TaskExample;
-import com.tongji.oldman.response.ATaskListResponse;
+import com.tongji.oldman.entity.*;
+import com.tongji.oldman.response.TaskListResponse;
+import com.tongji.oldman.response.TaskResponse;
 import com.tongji.oldman.response.UserResponse;
 import com.tongji.oldman.service.OldService;
 import com.tongji.oldman.service.TaskService;
+import com.tongji.oldman.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -19,10 +19,12 @@ import java.util.List;
 public class TasksController {
     private final TaskService taskService;
     private final OldService oldService;
+    private final UserService userService;
 
-    public TasksController(TaskService taskService, OldService oldService) {
+    public TasksController(TaskService taskService, OldService oldService, UserService userService) {
         this.taskService = taskService;
         this.oldService = oldService;
+        this.userService = userService;
     }
 
     private static class Req {
@@ -77,15 +79,30 @@ public class TasksController {
     public String aGetTasks(@RequestBody Req req) {
         TaskExample taskExample = new TaskExample();
         TaskExample.Criteria criteria = taskExample.createCriteria();
-        List<Task> tasks;
+        List<Task> taskList;
         if (req.uid != -1) {
             criteria.andUidEqualTo(req.uid);
         }
         else {
             criteria.andAllocatedEqualTo(0);
         }
-        tasks = taskService.getTasks(taskExample);
-        ATaskListResponse taskListResponse = new ATaskListResponse(tasks);
+        taskList = taskService.getTasks(taskExample);
+        int size = taskList.size();
+        List<TaskResponse> list = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            Integer oid = taskList.get(i).getOid();
+            OldExample oldExample = new OldExample();
+            OldExample.Criteria criteria1 = oldExample.createCriteria();
+            criteria1.andOidEqualTo(oid);
+            List<Old> olds = oldService.getOlds(oldExample);
+            UserExample userExample = new UserExample();
+            UserExample.Criteria criteria2 = userExample.createCriteria();
+            criteria2.andUidEqualTo(taskList.get(i).getUid());
+            List<User> users = userService.getUsers(userExample);
+            TaskResponse taskResponse = new TaskResponse(taskList.get(i), olds.get(0), users.get(0));
+            list.add(taskResponse);
+        }
+        TaskListResponse taskListResponse = new TaskListResponse(list);
         return JSON.toJSONString(taskListResponse);
     }
 

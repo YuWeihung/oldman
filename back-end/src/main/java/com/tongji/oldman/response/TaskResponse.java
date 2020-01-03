@@ -2,22 +2,25 @@ package com.tongji.oldman.response;
 
 import com.tongji.oldman.entity.Old;
 import com.tongji.oldman.entity.Task;
+import com.tongji.oldman.entity.User;
 
 public class TaskResponse {
     private Integer tid;
     private String title;
     private String image;
     private String oname;
+    private String uname;
     private String description;
     private Integer frequency;
     private Integer allocated;
     private Integer finished;
 
-    public TaskResponse(Task task, Old old) {
+    public TaskResponse(Task task, Old old, User user) {
         this.tid = task.getTid();
         this.title = task.getTitle();
         this.image = task.getImage();
         this.oname = old.getName();
+        this.uname = user.getName();
         this.description = task.getDescription();
         this.frequency = task.getFrequency();
         this.allocated = task.getAllocated();

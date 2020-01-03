@@ -28,7 +28,12 @@ public class CalendarController {
     private static class Req {
         private Integer uid;
         private String context;
+        private String uname;
         private String date;
+
+        public void setUname(String uname) {
+            this.uname = uname;
+        }
 
         public void setUid(Integer uid) {
             this.uid = uid;
@@ -57,6 +62,7 @@ public class CalendarController {
         Date date1 = dateFormat.parse(req.date);
         Calendar calendar = new Calendar();
         calendar.setUid(req.uid);
+        calendar.setUname(req.uname);
         calendar.setContext(req.context);
         calendar.setDate(date1);
         int success = 0;
