@@ -1,5 +1,7 @@
 package com.tongji.oldman.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -99,6 +101,7 @@ public class Health implements Serializable {
      *
      * @mbg.generated
      */
+    @JSONField(format = "yyyy-MM-dd")
     private Date date;
 
     /**
