@@ -12,6 +12,7 @@ import com.tongji.oldman.service.HealthService;
 import com.tongji.oldman.service.OldService;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +36,7 @@ public class OldsController {
         private String name;
         private String address;
         private String image;
-        private Date birthday;
+        private String birthday;
         private Integer gender;
         private String identity;
         private String nation;
@@ -76,7 +77,7 @@ public class OldsController {
             this.address = address;
         }
 
-        public void setBirthday(Date birthday) {
+        public void setBirthday(String birthday) {
             this.birthday = birthday;
         }
 
@@ -177,11 +178,13 @@ public class OldsController {
     }
 
     @PostMapping("/createold")
-    public String createOld(@RequestBody Req req) {
+    public String createOld(@RequestBody Req req) throws ParseException {
         Old old = new Old();
         old.setName(req.name);
         old.setImage(req.image);
-        old.setBirthday(req.birthday);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = dateFormat.parse(req.birthday);
+        old.setBirthday(date);
         old.setGender(req.gender);
         old.setIdentity(req.identity);
         old.setAddress(req.address);
@@ -197,7 +200,8 @@ public class OldsController {
         old.setResponsibility(req.responsibility);
         int success = 0;
         int newOld = oldService.newOld(old);
-        success = 1;
+        if (newOld == 1)
+            success = 1;
         UserResponse userResponse = new UserResponse(success);
         return JSON.toJSONString(userResponse);
     }
@@ -217,7 +221,7 @@ public class OldsController {
     }
 
     @PostMapping("/changeoldinfo")
-    public String changeOldInfo(@RequestBody Req req) {
+    public String changeOldInfo(@RequestBody Req req) throws ParseException {
         Old old = new Old();
 //        old.setResponsibility(req.responsibility);
         old.setDependantidentity(req.dependantindentity);
@@ -233,7 +237,9 @@ public class OldsController {
         old.setName(req.name);
         old.setOid(req.oid);
         old.setImage(req.image);
-        old.setBirthday(req.birthday);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = dateFormat.parse(req.birthday);
+        old.setBirthday(date);
         old.setGender(req.gender);
         old.setIdentity(req.identity);
         int success = 0;
