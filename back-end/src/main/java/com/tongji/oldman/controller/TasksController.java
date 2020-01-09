@@ -160,6 +160,18 @@ public class TasksController {
         task.setTid(req.tid);
         task.setUid(req.uid);
         task.setAllocated(1);
+
+        TaskExample taskExample = new TaskExample();
+        TaskExample.Criteria criteria = taskExample.createCriteria();
+        criteria.andTidEqualTo(req.tid);
+        List<Task> tasks = taskService.getTasks(taskExample);
+        if (tasks.get(0).getOid() != null) {
+            Old old = new Old();
+            old.setOid(tasks.get(0).getOid());
+            old.setResponsibility(req.uid);
+            oldService.updateOld(old);
+        }
+        
         int success = 0;
         int update = taskService.updateTask(task);
         if (update == 1)
