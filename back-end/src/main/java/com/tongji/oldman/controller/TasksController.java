@@ -158,6 +158,7 @@ public class TasksController {
         task.setTid(req.tid);
         task.setUid(req.uid);
         task.setAllocated(1);
+        task.setReason("-");
 
         TaskExample taskExample = new TaskExample();
         TaskExample.Criteria criteria = taskExample.createCriteria();
