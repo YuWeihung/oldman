@@ -29,11 +29,12 @@ public class MyTasksController {
         private Integer tid;
         private Integer oid;
         private String title;
-        private  String image;
+        private String image;
         private String description;
         private Integer frequency;
         private Integer allocated;
         private Integer finished;
+        private String reason;
 
         public void setUid(Integer uid) {
             this.uid = uid;
@@ -69,6 +70,10 @@ public class MyTasksController {
 
         public void setOid(Integer oid) {
             this.oid = oid;
+        }
+
+        public void setReason(String reason) {
+            this.reason = reason;
         }
     }
 
@@ -121,6 +126,7 @@ public class MyTasksController {
     public String transferTask(@RequestBody Req req) {
         Task task = new Task();
         task.setTid(req.tid);
+        task.setReason(req.reason);
         task.setAllocated(0);
         int transfer = taskService.updateTask(task);
         UserResponse userResponse = new UserResponse(1);

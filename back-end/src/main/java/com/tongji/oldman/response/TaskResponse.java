@@ -16,6 +16,7 @@ public class TaskResponse {
     private Integer frequency;
     private Integer allocated;
     private Integer finished;
+    private String reason;
 
     public TaskResponse(Task task, Old old, User user) {
         this.tid = task.getTid();
@@ -29,6 +30,7 @@ public class TaskResponse {
         this.frequency = task.getFrequency();
         this.allocated = task.getAllocated();
         this.finished = task.getFinished();
+        this.reason = task.getReason();
     }
 
     public void setUname(String uname) {
@@ -117,5 +119,13 @@ public class TaskResponse {
 
     public Integer getOid() {
         return oid;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public String getReason() {
+        return reason;
     }
 }
