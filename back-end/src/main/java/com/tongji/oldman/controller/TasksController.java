@@ -82,8 +82,7 @@ public class TasksController {
         List<Task> taskList;
         if (req.uid != -1) {
             criteria.andUidEqualTo(req.uid);
-        }
-        else {
+        } else {
             criteria.andAllocatedEqualTo(0);
         }
         taskList = taskService.getTasks(taskExample);
@@ -98,8 +97,7 @@ public class TasksController {
                 criteria1.andOidEqualTo(oid);
                 List<Old> olds = oldService.getOlds(oldExample);
                 old = olds.get(0);
-            }
-            else {
+            } else {
                 old = new Old();
             }
             UserExample userExample = new UserExample();
@@ -171,7 +169,7 @@ public class TasksController {
             old.setResponsibility(req.uid);
             oldService.updateOld(old);
         }
-        
+
         int success = 0;
         int update = taskService.updateTask(task);
         if (update == 1)

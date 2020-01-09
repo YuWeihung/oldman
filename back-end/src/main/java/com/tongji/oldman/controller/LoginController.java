@@ -47,12 +47,10 @@ public class LoginController {
             user = users.get(0);
             if (users.get(0).getPassword().equals(req.password)) {
                 success = 1;
-            }
-            else {
+            } else {
                 wrongpassword = 1;
             }
-        }
-        else {
+        } else {
             user = new User();
         }
         return JSON.toJSONString(new UserResponse(success, user, wrongpassword));

@@ -19,7 +19,7 @@ public class MyInfoController {
         this.userService = userService;
     }
 
-    private static class  Req {
+    private static class Req {
         private Integer uid;
         private String password;
         private String newpassword;
@@ -55,12 +55,10 @@ public class MyInfoController {
                 user1.setUid(req.uid);
                 user1.setPassword(req.newpassword);
                 int updateUser = userService.updateUser(user1);
-            }
-            else {
+            } else {
                 wrongpassword = 1;
             }
-        }
-        else {
+        } else {
             user = new User();
         }
         return JSON.toJSONString(new UserResponse(success, user, wrongpassword));

@@ -94,8 +94,7 @@ public class MyTasksController {
                 criteria1.andOidEqualTo(oid);
                 List<Old> olds = oldService.getOlds(oldExample);
                 old = olds.get(0);
-            }
-            else {
+            } else {
                 old = new Old();
             }
             TaskResponse taskResponse = new TaskResponse(taskList.get(i), old, new User());

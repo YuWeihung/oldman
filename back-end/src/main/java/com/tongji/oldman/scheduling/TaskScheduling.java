@@ -11,7 +11,7 @@ import java.util.List;
 @Component
 public class TaskScheduling {
 
-    private final TaskService  taskService;
+    private final TaskService taskService;
 
     public TaskScheduling(TaskService taskService) {
         this.taskService = taskService;

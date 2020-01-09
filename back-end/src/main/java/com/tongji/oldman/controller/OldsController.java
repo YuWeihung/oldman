@@ -165,12 +165,10 @@ public class OldsController {
         OldExample.Criteria criteria = oldExample.createCriteria();
         if (req.type.equals("oid")) {
             criteria.andOidEqualTo(req.oid);
-        }
-        else if (req.type.equals("name")) {
-            criteria.andNameLike("%"+req.name+"%");
-        }
-        else if (req.type.equals("address")) {
-            criteria.andAddressLike("%"+req.address+"%");
+        } else if (req.type.equals("name")) {
+            criteria.andNameLike("%" + req.name + "%");
+        } else if (req.type.equals("address")) {
+            criteria.andAddressLike("%" + req.address + "%");
         }
         olds = oldService.getOlds(oldExample);
         OldListResponse oldListResponse = new OldListResponse(olds);
